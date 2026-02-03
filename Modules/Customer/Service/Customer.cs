@@ -58,6 +58,7 @@ public class CustomerService
         existing.doc_addr_district = model.doc_addr_district;
         existing.doc_addr_sub_district = model.doc_addr_sub_district;
         existing.doc_addr_postcode = model.doc_addr_postcode;
+        _context.customer.Update(existing);
         await _context.SaveChangesAsync();
         return true;
     }

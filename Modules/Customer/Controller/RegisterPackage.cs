@@ -26,7 +26,7 @@ public class RegisterPackageController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(customer model)
+    public async Task<IActionResult> Create(register_package model)
     {
         var result = await _registerPackageService.CreateAsync(model);
         return CreatedAtAction(nameof(Get),
@@ -35,7 +35,7 @@ public class RegisterPackageController : ControllerBase
     }
 
     [HttpPut("{uid}")]
-    public async Task<IActionResult> Update(Guid uid, customer model)
+    public async Task<IActionResult> Update(Guid uid, register_package model)
     {
         var ok = await _registerPackageService.UpdateAsync(uid, model);
         return ok ? NoContent() : NotFound();
