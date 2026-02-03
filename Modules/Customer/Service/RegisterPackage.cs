@@ -58,11 +58,11 @@ public class RegisterPackageService
     }
     
 
-    public async Task<bool> RegisterPackageAsync(Guid? customerId, Guid? packageId)
+    public async Task<bool> RegisterPackageAsync(Guid? customer_uid, Guid? package_uid)
     {
         var now = DateTime.UtcNow;
         var activePackage = await _context.register_package
-            .Where(x => x.customer_uid == customerId &&
+            .Where(x => x.customer_uid == customer_uid &&
                         x.expired_date > now)
             .FirstOrDefaultAsync();
 
@@ -71,18 +71,22 @@ public class RegisterPackageService
         var register = new register_package
         {
             register_package_uid = Guid.NewGuid(),
-            customer_uid = customerId,
-            package_uid = packageId,
+            customer_uid = customer_uid,
+            package_uid = package_uid,
             register_date = now,
             expired_date = now.AddDays(30) 
         };
 
         _context.register_package.Add(register);
-        var customer = await _context.Set<customer>()
-            .FindAsync(customerId);
+        var customer = await _context.customer
+            .FindAsync(customer_uid);
 
-        customer?.register_package_uid = packageId;
-
+        customer?.register_package_uid = package_uid;
+        if (customer != null)
+        {
+            customer.register_package_uid = package_uid;
+            _context.customer.Update(customer);
+        }
         await _context.SaveChangesAsync();
 
         return true;
