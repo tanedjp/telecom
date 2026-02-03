@@ -48,11 +48,9 @@ public class RegisterPackageController : ControllerBase
         return ok ? NoContent() : NotFound();
     }
     [HttpPost("register")]
-    public async Task<IActionResult> Subscribe(
-        Guid customerId,
-        Guid packageId)
+    public async Task<IActionResult> Subscribe([FromBody] register_request request)
     {
-        var ok = await _registerPackageService.RegisterPackageAsync(customerId, packageId);
+        var ok = await _registerPackageService.RegisterPackageAsync(request.customer_uid, request.package_uid);
 
         if (!ok)
             return BadRequest(new

@@ -74,7 +74,7 @@ public class RegisterPackageService
     }
     
 
-    public async Task<bool> RegisterPackageAsync(Guid customerId, Guid packageId)
+    public async Task<bool> RegisterPackageAsync(Guid? customerId, Guid? packageId)
     {
         var now = DateTime.UtcNow;
         var activePackage = await _context.register_package
